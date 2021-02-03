@@ -1,16 +1,16 @@
 # Dockerfile to build docker-compose for aarch64
-FROM python:3.8.2-buster as builder
+FROM python:3.9.1-buster as builder
 
 ENV LANG C.UTF-8
 # https://github.com/docker/compose/releases
-ENV DOCKER_COMPOSE_VER 1.25.5
-ENV DOCKER_COMPOSE_COMMIT "8a1c60f6"
+ENV DOCKER_COMPOSE_VER 1.28.2
+ENV DOCKER_COMPOSE_COMMIT "6763035"
 # https://pypi.org/project/PyInstaller/#history
-ENV PYINSTALLER_VER 3.6
+ENV PYINSTALLER_VER 4.2
 # https://pypi.org/project/six/#history
-ENV SIX_VER 1.14.0
+ENV SIX_VER 1.15.0
 # https://pypi.org/project/PyNaCl/#history
-ENV PYNACL_VERSION 1.3.0
+ENV PYNACL_VERSION 1.4.0
 
 RUN apt-get update && apt-get install -qq --no-install-recommends unzip && pip install --upgrade pip && pip install six==${SIX_VER}
 
@@ -44,7 +44,7 @@ RUN cd compose-${DOCKER_COMPOSE_VER} \
     && mkdir /dist \
     && mv dist/docker-compose /dist/docker-compose
 
-FROM alpine:3.11.6
+FROM alpine:3.13.1
 
 COPY --from=builder /dist/docker-compose /tmp/docker-compose
 
